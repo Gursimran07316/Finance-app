@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { transactions } from '../data/transactions';
+import * as database from '../database';
 
 const SummaryScreen = () => {
-  const totalExpenses = transactions.reduce((sum, transaction) => sum + parseFloat(transaction.amount), 0).toFixed(2);
-  const highSpending = transactions.reduce((prev, current) => (parseFloat(prev.amount) > parseFloat(current.amount)) ? prev : current);
-  const lowSpending = transactions.reduce((prev, current) => (parseFloat(prev.amount) < parseFloat(current.amount)) ? prev : current);
-  
+  const [transactions, setTransactions] = useState([])
+  useEffect(() => {
+    (async () => {
+      const data = await database.load()
+      setTransactions(data)
+    })()
+  })
+  let totalExpenses=0,highSpending=0,lowSpending=0
+if(transactions.length!=0){
+   totalExpenses = transactions.reduce((sum, transaction) => sum + parseFloat(transaction.amount), 0).toFixed(2);
+   highSpending = transactions.length>1 ? transactions.reduce((prev, current) => (parseFloat(prev.amount) > parseFloat(current.amount)) ? prev : current): transactions[0];
+  lowSpending = transactions.length>1 ? transactions.reduce((prev, current) => (parseFloat(prev.amount) < parseFloat(current.amount)) ? prev : current): transactions[0];
+}
   // Mock balance - you can adjust as needed
   const balance = 1000 - totalExpenses;
 

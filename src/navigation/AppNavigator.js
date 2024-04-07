@@ -2,7 +2,8 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TransactionsStack from './TransactionsStack';
 import SummaryScreen from '../screens/SummaryScreen';
-import {AntDesign,Ionicons} from '@expo/vector-icons'
+import {AntDesign,Ionicons,Entypo} from '@expo/vector-icons'
+import AddTransactionScreen from '../screens/AddTransactionScreen';
 const Tab = createBottomTabNavigator();
 
 const AppNavigator = () => (
@@ -34,9 +35,30 @@ const AppNavigator = () => (
       return   <AntDesign name="info" size={24} color={color} />
       
       }
-    }} >
+    }} 
+    >
         {()=><SummaryScreen/>}
         </Tab.Screen>
+        <Tab.Screen name="Add" 
+        options={{
+          headerShown: true,
+        headerStyle: {
+          backgroundColor: '#add8e6', // Light blue color
+        },
+        headerTintColor: '#fff', // White color for the text
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+        tabBarActiveTintColor: '#add8e6', // Light blue color for the active tab
+        tabBarIcon:({focused})=>{
+          const color= focused ?"#add8e6":"black"
+       
+        return  <Entypo name="add-to-list" size={24} color={color} /> 
+        
+        }
+      }}  >
+          {()=><AddTransactionScreen/>}
+          </Tab.Screen>
   </Tab.Navigator>
 );
 
